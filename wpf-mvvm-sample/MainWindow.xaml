@@ -4,9 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:wpf_mvvm_sample"
+        xmlns:viewModels="clr-namespace:wpf_mvvm_sample.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+    <Window.DataContext>
+        <viewModels:MainWindowVm />
+    </Window.DataContext>
+    <DockPanel Margin="10">
+        <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="0 0 0 10">
+            <Button Command="{Binding SetFocusCommand}">
+                <TextBlock Text="SendMessage" />
+            </Button>
+        </StackPanel>
+        <DataGrid
+            x:Name="MainDataGrid"
+            ItemsSource="{Binding People}"
+            AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="名前" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="年齢" Binding="{Binding Age}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
 </Window>
