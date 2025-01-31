@@ -21,14 +21,16 @@ public partial class MainWindow : Window
                 if (MainDataGrid.Items.Count > m.RowIndex &&
                     MainDataGrid.Columns.Count > m.ColumnIndex)
                 {
-                    // セルを選択
-                    MainDataGrid.SelectedItem = MainDataGrid.Items[m.RowIndex];
+                    // ※SelectionUnlit="Cell"の場合は行の選択は行えずエラーになる
+                   //  MainDataGrid.SelectedItem = MainDataGrid.Items[m.RowIndex];
 
-                    // フォーカスを設定
+                    // セルへフォーカスする
                     var cell = new DataGridCellInfo(
                         MainDataGrid.Items[m.RowIndex],
                         MainDataGrid.Columns[m.ColumnIndex]
-                    );
+                        );
+                    
+                    // セルを選択
                     MainDataGrid.CurrentCell = cell;
                     MainDataGrid.Focus();
 

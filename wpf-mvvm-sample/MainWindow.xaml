@@ -18,6 +18,7 @@
         </StackPanel>
         <DataGrid
             x:Name="MainDataGrid"
+            SelectionUnit="Cell"
             ItemsSource="{Binding People}"
             AutoGenerateColumns="False">
             <DataGrid.Columns>
