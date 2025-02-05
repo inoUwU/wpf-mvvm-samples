@@ -43,14 +43,17 @@ public partial class MainWindow : Window
 
     private void DataGridCell_GotFocus(object sender, RoutedEventArgs e)
     {
-        var cell = sender as DataGridCell;
-        if (cell != null && !cell.IsEditing)
+        if (sender is not DataGridCell cell || cell.IsEditing) return;
+        
+        cell.IsEditing = true;
+        switch (cell.Content)
         {
-            cell.IsEditing = true;
-            if (cell.Content is TextBox textBox)
-            {
+            case TextBox textBox:
                 textBox.Focus();
-            }
+                break;
+            case ComboBox comboBox:
+                comboBox.Focus();
+                break;
         }
     }
 }

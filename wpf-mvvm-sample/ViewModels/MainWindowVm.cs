@@ -16,8 +16,8 @@ public partial class MainWindowVm : ObservableValidator
         
         People =
         [
-            new Person(service) { Name = "山田太郎", Age = 30 },
-            new Person(service) { Name = "鈴木花子", Age = 25 }
+            new Person(service) { Name = "山田太郎", Age = 30,Sex = 0},
+            new Person(service) { Name = "鈴木花子", Age = 25, Sex = 1},
         ];
         
         SexTypeComboBoxItems =
