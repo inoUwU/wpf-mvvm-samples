@@ -22,14 +22,14 @@ public partial class MainWindow : Window
                     MainDataGrid.Columns.Count > m.ColumnIndex)
                 {
                     // ※SelectionUnlit="Cell"の場合は行の選択は行えずエラーになる
-                   //  MainDataGrid.SelectedItem = MainDataGrid.Items[m.RowIndex];
+                    //  MainDataGrid.SelectedItem = MainDataGrid.Items[m.RowIndex];
 
                     // セルへフォーカスする
                     var cell = new DataGridCellInfo(
                         MainDataGrid.Items[m.RowIndex],
                         MainDataGrid.Columns[m.ColumnIndex]
-                        );
-                    
+                    );
+
                     // セルを選択
                     MainDataGrid.CurrentCell = cell;
                     MainDataGrid.Focus();
@@ -39,5 +39,18 @@ public partial class MainWindow : Window
                 }
             }));
         });
+    }
+
+    private void DataGridCell_GotFocus(object sender, RoutedEventArgs e)
+    {
+        var cell = sender as DataGridCell;
+        if (cell != null && !cell.IsEditing)
+        {
+            cell.IsEditing = true;
+            if (cell.Content is TextBox textBox)
+            {
+                textBox.Focus();
+            }
+        }
     }
 }

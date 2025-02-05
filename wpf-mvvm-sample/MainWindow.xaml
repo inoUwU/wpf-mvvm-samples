@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:wpf_mvvm_sample"
         xmlns:viewModels="clr-namespace:wpf_mvvm_sample.ViewModels"
+        xmlns:ct="clr-namespace:wpf_mvvm_sample.CustomControls"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.DataContext>
@@ -47,7 +48,15 @@
                                     Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                 <DataGridTextColumn Header="Age"
                                     Binding="{Binding Age, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                <DataGridComboBoxColumn Header="Sex"
+                                        ItemsSource="{Binding SexTypeComboBoxItems}"
+                                        SelectedItemBinding="{Binding Sex, UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
+            <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <EventSetter Event="GotFocus" Handler="DataGridCell_GotFocus"/>
+                        </Style>
+            </DataGrid.CellStyle>
         </DataGrid>
     </DockPanel>
 </Window>
