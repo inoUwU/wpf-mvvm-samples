@@ -26,7 +26,9 @@
         </StackPanel>
 
         <DataGrid x:Name="MainDataGrid" ItemsSource="{Binding People}" AutoGenerateColumns="False" Margin="10"
-                  CanUserAddRows="True">
+                  CanUserAddRows="True"
+                  LoadingRow="DataGrid_LoadingRow"
+                  >
             <DataGrid.Resources>
                 <Style TargetType="DataGridCell">
                     <Setter Property="Validation.ErrorTemplate">

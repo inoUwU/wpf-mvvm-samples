@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using CommunityToolkit.Mvvm.Messaging;
 using wpf_mvvm_sample.ViewModels;
 
@@ -44,16 +45,44 @@ public partial class MainWindow : Window
     private void DataGridCell_GotFocus(object sender, RoutedEventArgs e)
     {
         if (sender is not DataGridCell cell || cell.IsEditing) return;
-        
+        // セルを編集モードにする
         cell.IsEditing = true;
-        switch (cell.Content)
+        Dispatcher.BeginInvoke(new Action(() =>
         {
-            case TextBox textBox:
+            switch (cell.Content)
+            {
+                case TextBox textBox:
+                    textBox.Focus();
+                    break;
+                case ComboBox comboBox:
+                    comboBox.Focus();
+                    break;
+            }
+        }), DispatcherPriority.Input);
+    }
+
+    private void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
+    {
+        e.Row.GotFocus += DataGridRow_GotFocus;
+    }
+
+    private void DataGridRow_GotFocus(object sender, RoutedEventArgs e)
+    {
+        if (e.OriginalSource is not DataGridCell cell || cell.IsEditing) return;
+        if (sender is not DataGrid dataGrid) return;
+
+        // 行内のセルを編集モードにする   
+        dataGrid.BeginEdit(e);
+        Dispatcher.BeginInvoke(new Action(() =>
+        {
+            if (cell.Content is TextBox textBox)
+            {
                 textBox.Focus();
-                break;
-            case ComboBox comboBox:
+            }
+            else if (cell.Content is ComboBox comboBox)
+            {
                 comboBox.Focus();
-                break;
-        }
+            }
+        }), DispatcherPriority.Input);
     }
 }
