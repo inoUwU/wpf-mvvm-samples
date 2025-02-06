@@ -6,22 +6,16 @@ namespace wpf_mvvm_sample.Models;
 
 public partial class Person : ObservableValidator
 {
-    private readonly InputValidation _service;
+    private readonly InputValidation _service = new InputValidation();
 
-    public Person(InputValidation service)
-    {
-        this._service = service;
-    }
-
-    [ObservableProperty]
-    [CustomValidation(typeof(Person), nameof(ValidateName))]
+    // memo: NotifyDataErrorInfoを使用しないとエラーが検証されない
+    [NotifyDataErrorInfo] [ObservableProperty] [CustomValidation(typeof(Person), nameof(ValidateName))]
     private string? _name;
 
-    [ObservableProperty]
-    [CustomValidation(typeof(Person), nameof(ValidateAge))]
+    [ObservableProperty] [NotifyDataErrorInfo] [CustomValidation(typeof(Person), nameof(ValidateAge))]
     private int _age;
-    
-    [ObservableProperty]
+
+    [NotifyDataErrorInfo] [Required(ErrorMessage = "性別を選択してください")] [ObservableProperty]
     private int _sex;
 
     /// <summary>
@@ -32,7 +26,9 @@ public partial class Person : ObservableValidator
         // 共通化されたバリデーションロジックを呼び出す
         var instance = (Person)context.ObjectInstance;
         var isValid = instance._service.NameValidate(name);
-        return isValid ? ValidationResult.Success : new ValidationResult("The name was not validated by the fancy service");
+        return isValid
+            ? ValidationResult.Success
+            : new ValidationResult("The name must be a non-empty string.", ["Name"]);
     }
 
     /// <summary>
@@ -42,9 +38,25 @@ public partial class Person : ObservableValidator
     {
         if (age <= 0 || age > 120)
         {
-            return new ValidationResult("Age must be a positive number between 1 and 120.");
+            return new ValidationResult("Age must be a positive number between 1 and 120.",["Age"]);
         }
 
         return ValidationResult.Success;
+    }
+
+ /// <summary>
+    /// プロパティのエラーを取得する
+    /// </summary>
+    public IEnumerable<string> GetErrors(string propertyName)
+    {
+        return base.GetErrors(propertyName)?.OfType<string>() ?? Enumerable.Empty<string>();
+    }
+
+    /// <summary>
+    /// オブジェクト全体のエラーを取得する
+    /// </summary>
+    public IEnumerable<string> GetAllErrors()
+    {
+        return base.GetErrors(string.Empty).OfType<string>();
     }
 }
