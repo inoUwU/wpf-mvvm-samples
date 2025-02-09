@@ -1,0 +1,71 @@
+﻿<DatePicker
+    x:Class="wpf_mvvm_sample.CustomControls.Ym"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    mc:Ignorable="d"
+    Name="YearPicker"
+    SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
+    CalendarOpened="DatePicker_Opened"
+    CalendarClosed="YM_OnCalendarClosed"
+    SelectedDateFormat="Short"
+    Text="{Binding SelectedDate, StringFormat='{}{0:yyyy/MM}', RelativeSource={RelativeSource Self}}"
+    d:DataContext="{d:DesignInstance }">
+    <DatePicker.Resources>
+        <Style TargetType="DatePickerTextBox" BasedOn="{StaticResource {x:Type DatePickerTextBox}}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DatePickerTextBox">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="True">
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="False"
+                                              HorizontalScrollBarVisibility="Hidden"
+                                              VerticalScrollBarVisibility="Hidden" />
+                                <Label Cursor="IBeam" Visibility="Hidden" x:Name="WatermarkText"
+                                       Content="年月の選択" FontFamily="Segoe UI"
+                                       Foreground="LightGray" Padding="0" VerticalAlignment="Center" />
+                                <TextBox x:Name="PART_TextBox"
+                                         Text="{Binding Path=SelectedDate, StringFormat = {}{0:yyyy/MM}, 
+                                                            RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" >
+                                    <TextBox.Style>
+                                        <Style  TargetType="TextBox">
+                                            <Setter  Property="BorderThickness" Value="0"/>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FF569DE5" />
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Static System:String.Empty}">
+                                <Setter Property="Visibility" TargetName="WatermarkText" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter Property="Visibility" TargetName="WatermarkText" Value="Visible" />
+                            </Trigger>
+                            
+                            <Trigger Property="Text" Value="{x:Static System:String.Empty}">
+                                <Setter Property="Visibility" TargetName="PART_TextBox" Value="Hidden" />
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter Property="Visibility" TargetName="PART_TextBox" Value="Hidden" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+    </DatePicker.Resources>
+</DatePicker>
