@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.Messaging;
+using wpf_mvvm_sample.Messages;
 using wpf_mvvm_sample.ViewModels;
 
 namespace wpf_mvvm_sample;
@@ -15,7 +16,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         // メッセージの受信登録
-        WeakReferenceMessenger.Default.Register<MainWindowVm.FocusRequestMessage>(this, (r, m) =>
+        WeakReferenceMessenger.Default.Register<GridCellFocusRequestMessage>(this, (r, m) =>
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -40,6 +41,18 @@ public partial class MainWindow : Window
                 }
             }));
         });
+        
+        // 好きな要素にフォーカスを設定する
+        // メッセージの受信機能
+       WeakReferenceMessenger.Default.Register<Messages.FocusElementMessage>(this, (r, m) =>
+       {
+           Dispatcher.BeginInvoke(new Action(() =>
+           {
+                var element = this.FindName(m.ElementName);
+                if(element is FrameworkElement frameworkElement)
+                    frameworkElement.Focus();
+           }));
+       });
     }
 
     private void DataGridCell_GotFocus(object sender, RoutedEventArgs e)

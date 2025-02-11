@@ -5,6 +5,7 @@ using System.Windows.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using wpf_mvvm_sample.Messages;
 using wpf_mvvm_sample.Models;
 using wpf_mvvm_sample.Utils;
 using wpf_mvvm_sample.ValidationServices;
@@ -42,13 +43,6 @@ public partial class MainWindowVm : ObservableValidator
 
     [ObservableProperty] private ObservableCollection<ComboBoxItem> _sexTypeComboBoxItems;
 
-    // DataGridのフォーカス制御用のメッセージ
-    public class FocusRequestMessage
-    {
-        public int RowIndex { get; set; }
-        public int ColumnIndex { get; set; }
-    }
-
     [RelayCommand]
     private void SetFocus()
     {
@@ -56,12 +50,18 @@ public partial class MainWindowVm : ObservableValidator
         {
             // 1行目のNameカラムにフォーカスを設定
             // CurrentCell = new DataGridCellInfo(People[0], DataGridColumn.CanUserReorderProperty);
-            WeakReferenceMessenger.Default.Send(new FocusRequestMessage
+            WeakReferenceMessenger.Default.Send(new GridCellFocusRequestMessage
             {
                 RowIndex = 0,
                 ColumnIndex = 0
             });
         }
+    }
+
+    [RelayCommand]
+    private void SetFocusToYearMonthPicker()
+    {
+        WeakReferenceMessenger.Default.Send(new FocusElementMessage("YmPicker"));
     }
 
     [RelayCommand]

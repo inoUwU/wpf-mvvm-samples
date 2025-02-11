@@ -18,17 +18,17 @@
     <DockPanel Margin="10">
         <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="10">
             <StackPanel Orientation="Horizontal">
-                <Button Content="SendMessage" Command="{Binding SetFocusCommand}" Margin="0 10 0 0" />
+                <Button Content="FocusToCell"
+                        Command="{Binding SetFocusCommand}" Margin="0 10 0 0" />
+                <Button Content="FocusToYearMonthPicker"
+                        Command="{Binding SetFocusToYearMonthPickerCommand}" Margin="10 10 0 0" />
                 <Button Content="Save" Command="{Binding SaveCommand}" Margin="10 10 0 0" />
             </StackPanel>
-            <ct:YearMonthPicker Width="Auto"
-                                SelectedDate="{Binding SelectedYearMonth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Margin="0 10 0 10">
-            </ct:YearMonthPicker>
-
-            <ct:Ym Width="Auto"
-                   SelectedDate="{Binding SelectedYearMonth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
+            <StackPanel Margin="0 10 0 0">
+                <ct:Ym Width="Auto"
+                       x:Name="YmPicker"
+                       SelectedDate="{Binding SelectedYearMonth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
         </StackPanel>
 
         <DataGrid x:Name="MainDataGrid"
