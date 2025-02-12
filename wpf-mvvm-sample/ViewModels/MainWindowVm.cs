@@ -41,7 +41,20 @@ public partial class MainWindowVm : ObservableValidator
 
     [ObservableProperty] private DateTime? _selectedYearMonth;
 
+    [ObservableProperty] private bool _isEnabledYearMonthPicker = true;
+
     [ObservableProperty] private ObservableCollection<ComboBoxItem> _sexTypeComboBoxItems;
+
+    partial void OnSelectedYearMonthChanged(DateTime? value)
+    {
+        IsEnabledYearMonthPicker = false;
+    }
+
+    [RelayCommand]
+    private void CancelDate()
+    {
+        SelectedYearMonth = null;
+    }
 
     [RelayCommand]
     private void SetFocus()
