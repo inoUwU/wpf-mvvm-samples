@@ -23,23 +23,31 @@
                 <Button Content="FocusToYearMonthPicker"
                         Command="{Binding SetFocusToYearMonthPickerCommand}" Margin="10 10 0 0" />
                 <Button Content="Save" Command="{Binding SaveCommand}" Margin="10 10 0 0" />
+                <Button 
+                        Content="add row"
+                        Command="{Binding AddNewRowCommand}"
+                        HorizontalAlignment="Left"
+                        Margin="10,10,0,0"
+                        Padding="10,5" />
+
             </StackPanel>
             <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
                 <ct:Ym Width="Auto"
-                       IsEnabled="{Binding IsEnabledYearMonthPicker}"
+                       IsEnabled="{Binding IsEnabledYearMonthPicker,UpdateSourceTrigger=PropertyChanged}"
                        x:Name="YmPicker"
                        MinWidth="200"
                        SelectedDate="{Binding SelectedYearMonth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <Button Content="キャンセル" Margin="10 0 0 0" Command="{Binding CancelDateCommand}"/>
+                <Button Content="キャンセル" Margin="10 0 0 0" Command="{Binding CancelDateCommand}" />
             </StackPanel>
         </StackPanel>
 
         <DataGrid x:Name="MainDataGrid"
                   ItemsSource="{Binding People,UpdateSourceTrigger=PropertyChanged}"
                   AutoGenerateColumns="False"
+                  SelectionUnit="FullRow"
                   Margin="10"
                   CanUserResizeRows="False"
-                  CanUserAddRows="True">
+                  CanUserAddRows="False">
             <DataGrid.Resources>
                 <Style TargetType="DataGridCell">
                     <Setter Property="Validation.ErrorTemplate">
@@ -62,6 +70,18 @@
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Test">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Size}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Size}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Name"
                                     Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                     IsReadOnly="False" />
@@ -74,12 +94,16 @@
                                         DisplayMemberPath="Name"
                                         SelectedValueBinding="{Binding Sex, UpdateSourceTrigger=PropertyChanged}"
                                         IsReadOnly="False" />
+
+                <DataGridTemplateColumn Header="Select">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding AvailableItems}"
+                                      SelectedItem="{Binding SelectedValue, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
-            <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <EventSetter Event="GotFocus" Handler="DataGridCell_GotFocus" />
-                </Style>
-            </DataGrid.CellStyle>
         </DataGrid>
     </DockPanel>
 </Window>
