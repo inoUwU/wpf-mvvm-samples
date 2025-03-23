@@ -33,13 +33,15 @@ public partial class MainWindowVm : ObservableValidator
         ];
     }
 
-    [ObservableProperty] private ObservableCollection<Person>? _people= [];
+    [ObservableProperty] private ObservableCollection<Person>? _people = [];
 
     [ObservableProperty] private DateTime? _selectedYearMonth;
 
     [ObservableProperty] private bool _isEnabledYearMonthPicker;
 
     [ObservableProperty] private ObservableCollection<ComboBoxItem> _sexTypeComboBoxItems;
+
+    [ObservableProperty] private ValidationViewModel? _validationViewModel;
 
     partial void OnSelectedYearMonthChanged(DateTime? value)
     {

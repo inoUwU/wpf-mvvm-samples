@@ -29,6 +29,12 @@
                         HorizontalAlignment="Left"
                         Margin="10,10,0,0"
                         Padding="10,5" />
+                <Button 
+                        Content="open sub window"
+                        Click="OpenSubWindow"
+                        HorizontalAlignment="Left"
+                        Margin="10,10,0,0"
+                        Padding="10,5" />
 
             </StackPanel>
             <StackPanel Margin="0 10 0 0" Orientation="Horizontal">

@@ -98,4 +98,13 @@ public partial class MainWindow : Window
             }
         }), DispatcherPriority.Input);
     }
+
+    private void OpenSubWindow(object sender, RoutedEventArgs e)
+    {
+        var subWindow = new SubWindow
+        {
+            Owner = this,
+        };
+        subWindow.ShowDialog();
+    }
 }
